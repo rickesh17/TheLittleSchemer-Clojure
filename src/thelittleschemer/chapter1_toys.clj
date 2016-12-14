@@ -1,37 +1,45 @@
 (ns thelittleschemer.chapter1-toys)
 
-; Defining an atom
-(defn atom?
+;; Defining an atom
+(def atom?
   (fn [x]
     (not (seq? x))))
 
-; Lists are already defined in Clojure. Remember to use '(x y z) as your list
-; If you just used (x y z) the you would calling x as a function and y,z as it's arguments
+;; Lists are already defined in Clojure. Remember to use '(x y z) as your list
+;; If you just used (x y z) the you would calling x as a function and y,z as it's arguments
 '(a b c)
 
-; The equivalent of "car" is the function "first"
+;; The equivalent of "car" is the function "first"
 (first '(x y z))
-; Output: x
+;; Output: x
 
-; The equivalent of "cdr" is the function "rest"
+;; The equivalent of "cdr" is the function "rest"
 (rest '(x y z))
-; Output: (y z)
+;; Output: (y z)
 
-; "cons" has the same functionality
+;; "cons" has the same functionality
 (cons "a" ())
-; Output: ("a")
+;; Output: ("a")
 
-; Defining null?
+;; Defining null?
 (def null?
   (fn [a]
     (or
       (nil? a)
-      (= () a))))
+      (= '() a))))
 
-; The equivalent of "eq?" is the function "="
+;; The equivalent of "eq?" is the function "="
 (= 1 (- 2 1))
-; Output: true
+;; Output: true
 (= (str "hello") (str "hel" "lo"))
-; Output: true
+;; Output: true
 (= 5 (+ 1 5))
-; Output: false
+;; Output: false
+
+;; Examples: (run in REPL)
+(atom? "a")
+(atom? 142)
+(atom? "*abc!!!")
+(null? ())
+(null? (quote ()))
+(null? '(a b c))
