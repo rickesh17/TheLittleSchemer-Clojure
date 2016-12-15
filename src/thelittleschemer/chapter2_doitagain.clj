@@ -20,6 +20,7 @@
              (member? a (rest lat))))))
 
 ;; Examples: (run in REPL)
+(lat? '(Jack Sprat could eat no chicken fat))
 (lat? '(bacon and eggs))
 (lat? '(bacon (and eggs)))
 (member? "tea" '("coffee" "and" "tea"))
