@@ -2,7 +2,6 @@
   (:require [thelittleschemer.chapter1-toys :as toys]))
 
 ;; Define a lat?
-
 (def lat?
   (fn [l]
     (cond
@@ -11,6 +10,7 @@
            (toys/atom? (first l))) (lat? (rest l))
       true false)))
 
+;; Define member?
 (def member?
   (fn [a lat]
     (cond
