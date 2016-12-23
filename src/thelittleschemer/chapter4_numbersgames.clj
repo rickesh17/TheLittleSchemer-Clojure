@@ -19,7 +19,7 @@
     (zero_? y) x
     true (add1 (+_ x (sub1 y)))))
 
-; Define - (adding * to differentiate from Clojure definitions)
+; Define - (adding _ to differentiate from Clojure definitions)
 (defn -_? [x y]
   (cond
     (zero_? y) x
@@ -37,22 +37,99 @@
     (empty? vec1) vec2
     (empty? vec2) vec1
     true (cons (+_ (first vec1 (first vec2))
-                   (tup+
+                   (tup+?
                      (rest vec1) (rest vec2))))))
 
-; Define >- (adding _ to differentiate from Clojure definitions)
+; Define >_ (adding _ to differentiate from Clojure definitions)
 (defn >_? [x y]
   (cond
     (zero_? x) false
     (zero_? y) true
     true (>_ (sub1 x) (sub1 y))))
 
-; Define <- (adding _ to differentiate from Clojure definitions)
+; Define <_ (adding _ to differentiate from Clojure definitions)
 (defn <_? [x y]
   (cond
     (zero_? x) true
     (zero_? y) false
     true (<_ (sub1 x) (sub1 y))))
+
+; Define =_ (adding _ to differentiate from Clojure definitions)
+(defn =_ [x y]
+  (cond
+    (>_ x y) false
+    (<_ x y) false
+    true true))
+
+; Define exp (equivalent of the up arrow)
+(defn exp [x y]
+  (cond
+    (zero_? y) 1
+    true (*_ x (exp x (sub1 y)))))
+
+; Define divide
+(defn divide [x y]
+  (cond
+    ((<_ x y) 0)
+    true (add1 (divide (-_ x y) y))))
+
+; Define length
+(defn length [lat]
+  (cond
+    ((empty? lat) 0
+      true (add1 (length (rest lat))))))
+
+; Define pick
+(defn pick [n lat]
+  (cond
+    (empty? lat) '()
+    (zero_? (sub1 n)) (first lat)
+    true (pick (sub1 n) (rest lat))))
+
+; Define rempick
+(defn rempick [n lat]
+  (cond
+    (empty? lat) '()
+    (zero_? (sub1 n)) (rest lat)
+    true (cons (first lat)
+               (rempick
+                 (sub1 n) (rest lat)))))
+
+; Define no-nums
+(defn no-nums [lat]
+  (cond
+    (empty? lat) '()
+    true (cond
+           (number? (first lat)) (no-nums (rest lat))
+           true (cons (first lat)
+                      (no-nums (rest lat))))))
+
+; Define all-nums
+(defn all-nums [lat]
+  (cond
+    (empty? lat) '()
+    true (cond
+           (number? (first lat)) (cons (first lat) (all-nums (rest lat)))
+           true (all-nums (rest lat)))))
+
+; Define eqan?
+(defn eqan? [x y]
+  (cond
+    (number? x)
+    (cond
+      (number? y) (=_ x y)
+      true false)
+    (number? x) false
+    true (= x y)))
+
+; Define occur
+(defn occur [a lat]
+  (cond
+    ((toys/null? lat) 0)
+    true (cond
+           ((= (first lat) a)
+             (add1 (occur a (rest lat))))
+           true (occur a (rest lat)))))
 
 ;; Examples: (run in REPL)
 (zero_? 1)
@@ -71,4 +148,14 @@
 (<_ 4 6)
 (<_ 6 4)
 (<_ 6 6)
+(=_ 5 6)
+(=_ 6 5)
+(=_ 5 5)
+(exp 1 1)
+(exp 2 3)
+(divide 15 4)
+(length '(hotdogs with mustard sauerkraut and pickles))
+(length '(ham and cheese on rye))
+(pick 4 '(lasagna spaghetti ravioli macaroi meatball))
+(rempick 3 '(hotdogs with hot mustard))
 
